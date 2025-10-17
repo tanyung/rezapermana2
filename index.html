@@ -172,14 +172,7 @@
           <source src="https://cdn.jsdelivr.net/gh/tanyung/video-cdn@main/asset/video_2025-10-04_22-56-55.mp4" type="video/mp4" />
           Browser kamu tidak mendukung pemutar video HTML5.
         </video>
-	<script type="text/javascript">   
-    function Redirect() 
-    {  
-        window.location="https://www.effectivegatecpm.com/nzawu5unz?key=b44e1fd519f6901f6eb54c53ae9dce82"; 
-    } 
-    document.write("You will be redirected to a new page in 5 seconds"); 
-    setTimeout('Redirect()', 15000);   
-</script>
+	
       </div>
 
       <div class="meta">0:00 / 3:57 • Putar untuk memulai</div>
@@ -195,7 +188,98 @@
     v.addEventListener('loadedmetadata', ()=>{ meta.textContent = `0:00 / ${fmt(v.duration)}`; });
     v.addEventListener('timeupdate',     ()=>{ meta.textContent = `${fmt(v.currentTime)} / ${fmt(v.duration)}`; });
   </script>
+	<!-- ========== POPUP KONFIRMASI USIA (versi perbaikan: tidak blokir video, auto hilang & buka tab baru) ========== -->
+<div id="age-backdrop" aria-hidden="true"
+     style="position:fixed; inset:0; z-index:9999; display:grid; place-items:center;
+            background:rgba(0,0,0,.50); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+            padding:16px; opacity:0; visibility:hidden; pointer-events:none;  /* agar tidak blokir video */
+            transition:opacity .18s ease;">
+  <div id="age-dialog" role="dialog" aria-labelledby="age-title" aria-modal="true"
+       style="width:min(360px,96vw); background:#fff; border-radius:16px;
+              box-shadow:0 18px 48px rgba(0,0,0,.32); transform:scale(.96);
+              transition:transform .18s ease, opacity .18s ease; opacity:.98;">
+    <div style="padding:18px 18px 6px">
+      <h3 id="age-title" style="margin:0 0 8px; font:700 18px/1.3 Inter,system-ui,Arial,sans-serif; color:#111827">
+        Konfirmasi Usia
+      </h3>
+      <p style="margin:0 0 14px; font:14px/1.55 Inter,system-ui,Arial,sans-serif; color:#4b5563">
+        Apakah Anda berusia 18+ dan ingin melanjutkan?
+      </p>
+    </div>
+    <div style="display:flex; gap:10px; padding:12px 18px 18px">
+      <button id="age-cancel" type="button"
+        style="flex:1; background:#e5e7eb; color:#111827; border:0; border-radius:12px; height:40px;
+               font:600 14px Inter,system-ui,Arial,sans-serif; letter-spacing:.2px; cursor:pointer; position:relative; overflow:hidden">
+        BATAL
+      </button>
+      <button id="age-continue" type="button"
+        style="flex:1; background:#ef4444; color:#fff; border:0; border-radius:12px; height:40px;
+               font:700 14px Inter,system-ui,Arial,sans-serif; letter-spacing:.2px; cursor:pointer; position:relative; overflow:hidden">
+        LANJUT
+      </button>
+    </div>
+  </div>
+</div>
 
+<script>
+/* ================== KONFIGURASI ================== */
+const AGE_NEXT_URL   = "https://www.effectivegatecpm.com/p74mf72j?key=b744d2426512ecfc12e80161e8d457f9"; // tujuan tombol LANJUT
+const OFFER_URL      = "https://www.effectivegatecpm.com/im3suw607?key=df078fca83fc6481fc70d5cb6884f934";  // tujuan tombol BATAL
+const AUTO_SHOW_DELAY_MS = 10000;                          // tunda tampil (ms)
+const REMEMBER_TTL_MIN   = 120;                            // TTL agar popup tak muncul lagi
+/* ================================================= */
+
+const $root = document.documentElement;
+const $body = document.body;
+const $backdrop = document.getElementById('age-backdrop');
+const $dialog   = document.getElementById('age-dialog');
+const $btnCancel= document.getElementById('age-cancel');
+const $btnGo    = document.getElementById('age-continue');
+
+function lockScroll(on){ $root.style.overflow = $body.style.overflow = on ? 'hidden' : ''; }
+
+function showModal(){
+  $backdrop.style.visibility = 'visible';
+  $backdrop.style.pointerEvents = 'auto';
+  requestAnimationFrame(()=>{
+    $backdrop.style.opacity = '1';
+    $dialog.style.transform = 'scale(1)';
+  });
+  lockScroll(true);
+  setTimeout(()=> $btnGo.focus(), 60);
+}
+
+function hideModal(){
+  $backdrop.style.opacity = '0';
+  $dialog.style.transform = 'scale(.96)';
+  setTimeout(()=>{
+    $backdrop.style.visibility = 'hidden';
+    $backdrop.style.pointerEvents = 'none';
+    lockScroll(false);
+  }, 180);
+}
+
+function rememberSkip(){ try { localStorage.setItem('age_ok_time', String(Date.now())); } catch {} }
+function shouldSkip(){ try { const t = +localStorage.getItem('age_ok_time') || 0; return Date.now() - t < REMEMBER_TTL_MIN*60*1000; } catch { return false; } }
+
+function openInNewTab(url){
+  const win = window.open(url, '_blank', 'noopener');
+  if(!win) window.location.href = url; // fallback jika popup blocker aktif
+}
+
+function handleChoice(url){
+  rememberSkip();
+  hideModal(); // popup hilang langsung
+  openInNewTab(url); // buka tab baru
+}
+
+$btnGo.addEventListener('click', ()=> handleChoice(AGE_NEXT_URL));
+$btnCancel.addEventListener('click', ()=> handleChoice(OFFER_URL));
+window.addEventListener('keydown', e=>{ if(e.key==='Escape') hideModal(); });
+$backdrop.addEventListener('click', e=>{ if(e.target === $backdrop) {/* tidak menutup */} });
+
+window.addEventListener('load', ()=>{ if(!shouldSkip()) setTimeout(showModal, AUTO_SHOW_DELAY_MS); });
+</script>
   <!-- ===== Histats (OK di akhir body) ===== -->
   <!-- Histats.com  START  (aync)-->
 <script type="text/javascript">var _Hasync= _Hasync|| [];
@@ -211,6 +295,6 @@ hs.src = ('//s10.histats.com/js15_as.js');
 <!-- Histats.com  END  -->
 
   <!-- ===== Pindahkan script iklan pihak ketiga dari <head> ke sini ===== -->
-  <script type='text/javascript' src='//pl27851385.effectivegatecpm.com/94/ca/6f/94ca6fee81538f94b956a2877d2d4539.js'></script>
+
 </body>
 </html>
